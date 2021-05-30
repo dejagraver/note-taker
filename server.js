@@ -1,5 +1,6 @@
 const express = require("express");
 
+
 //creating express' server
 const app = express();
 
@@ -12,10 +13,10 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // api and HTML routes 
-// const APIroutes = require('./routes/APIroutes');
-// const HTMLroutes = require('./routes/HTMLroutes');
-// app.use('/', APIroutes);
-// app.use('/', HTMLroutes);
+const APIroutes = require('./routes/APIroutes.js');
+const HTMLroutes = require('./routes/HTMLroutes.js');
+app.use('/', APIroutes);
+app.use('/', HTMLroutes);
 
 //listen for the PORT
 app.listen(PORT, () => {

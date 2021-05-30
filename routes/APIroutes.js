@@ -3,5 +3,57 @@
 
 // POST /api/notes should receive a new note to save on the request body, 
 // add it to the db.json file, and then return the new note to the client. 
-// You'll need to find a way to give each note a unique id when it's saved 
+// find a way to give each note a unique id when it's saved 
 // (look into npm packages that could do this for you).
+const { v4: uuidv4 } = require('uuid');
+const router = require('express').Router();
+const {notes} = require('../../lib/notetaker.js');
+
+const {
+  addNotes,
+//   notesId,
+//   removeNotes,
+  validateNotes
+} = require('/lib/notetaker.js');
+
+
+router.get('/notes', (req, res) => {
+    res.json(notes);
+  });
+  
+//   router.delete('/notesArray/:id', (req, res) => {
+//     const result = notesId(req.params.id, notesArray);
+//     const readNote = JSON.parse(fs.readFileSync("./db/db.json"));
+//     const writeNote = fs.writeFileSync(path.join(__dirname, '../db/db.json'), JSON.stringify({notes: noteArray}, null, 2));
+
+//     if (result) {
+//       res.json(result);
+//       writeNote;
+//     } else {
+//       res.send(404);
+//     }
+//   });
+
+  router.post('/notes', (req, res) => {
+    //requested newNotes
+    const newNotes = req.body;
+    //using npm pacakge uuid to assign a unique id to each one of the newNotes generated 
+    newNotes.id = uuidv4();
+    //reading data from the db.json file 
+    const data = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+    //pushing newNotes into the db.json file (data)
+    data.push(newNotes);
+
+    //if does not equal newNotes (title, text, number) responds error 404
+    if (!validateNotes (newNotes)) {
+      res.status(400).send('Please enter a note with proper, title, text, and id');
+    } else {
+        //else addedNotes calls on the addNotes function for writing the file and 
+        //calls on const newNotes for reading the notes, responds with the addedNote
+      const addedNotes = addNotes( notes, newNotes);
+      res.json(addedNotes);
+    }
+  });
+
+  module.exports = router;
+  
