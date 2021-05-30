@@ -7,18 +7,18 @@
 // (look into npm packages that could do this for you).
 const { v4: uuidv4 } = require('uuid');
 const router = require('express').Router();
-const {notes} = require('../../lib/notetaker.js');
+const noteTaker = require('../develop/db/db.json');
 
 const {
   addNotes,
 //   notesId,
 //   removeNotes,
   validateNotes
-} = require('/lib/notetaker.js');
+} = require('../lib/notetaker.js');
 
 
 router.get('/notes', (req, res) => {
-    res.json(notes);
+    res.json(noteTaker);
   });
   
 //   router.delete('/notesArray/:id', (req, res) => {
@@ -40,7 +40,7 @@ router.get('/notes', (req, res) => {
     //using npm pacakge uuid to assign a unique id to each one of the newNotes generated 
     newNotes.id = uuidv4();
     //reading data from the db.json file 
-    const data = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+    const data = JSON.parse(fs.readFileSync("./db/db.json"));
     //pushing newNotes into the db.json file (data)
     data.push(newNotes);
 
@@ -50,7 +50,7 @@ router.get('/notes', (req, res) => {
     } else {
         //else addedNotes calls on the addNotes function for writing the file and 
         //calls on const newNotes for reading the notes, responds with the addedNote
-      const addedNotes = addNotes( notes, newNotes);
+      const addedNotes = addNotes( noteTaker, newNotes);
       res.json(addedNotes);
     }
   });
