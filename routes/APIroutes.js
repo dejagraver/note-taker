@@ -7,7 +7,6 @@
 // (look into npm packages that could do this for you).
 const { v4: uuidv4 } = require('uuid');
 const router = require('express').Router();
-const noteTaker = require('../develop/db/db.json');
 
 const {
   addNotes,
@@ -16,9 +15,10 @@ const {
   validateNotes
 } = require('../lib/notetaker.js');
 
+const { notes } = require('../develop/db/db.json');
 
 router.get('/notes', (req, res) => {
-    res.json(noteTaker);
+    res.json(notes);
   });
   
 //   router.delete('/notesArray/:id', (req, res) => {
@@ -40,7 +40,7 @@ router.get('/notes', (req, res) => {
     //using npm pacakge uuid to assign a unique id to each one of the newNotes generated 
     newNotes.id = uuidv4();
     //reading data from the db.json file 
-    const data = JSON.parse(fs.readFileSync("./db/db.json"));
+    const data = JSON.parse(fs.readFileSync("../develop/db/db.json"));
     //pushing newNotes into the db.json file (data)
     data.push(newNotes);
 

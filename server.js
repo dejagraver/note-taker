@@ -15,7 +15,7 @@ app.use(express.static("public"));
 // api and HTML routes 
 const APIroutes = require('./routes/APIroutes.js');
 const HTMLroutes = require('./routes/HTMLroutes.js');
-app.use('/', APIroutes);
+app.use('/api', APIroutes);
 app.use('/', HTMLroutes);
 
 //listen for the PORT
